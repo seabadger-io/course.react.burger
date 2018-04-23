@@ -25,7 +25,8 @@ class BurgerIngredient extends Component {
       return (
         <div className={classes[mainClass]}>
           {this.ingredientClasses[type]['subclasses'].map((sc) => {
-            return <div className={classes[sc]}></div>;
+            return <div className={classes[sc]}
+            key={mainClass + classes[sc]}></div>;
           })}
         </div>
       );
