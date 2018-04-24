@@ -6,3 +6,9 @@
   font-size: 1.8em;
   cursor: pointer;
 }
+
+@media (min-width: 500px) {
+  .SidebarToggle {
+    display: none;
+  }
+}
