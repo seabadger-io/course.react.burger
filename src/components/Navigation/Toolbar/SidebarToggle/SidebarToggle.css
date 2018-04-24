@@ -1,0 +1,8 @@
+.SidebarToggle {
+  background-color: transparent;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  font-size: 1.8em;
+  cursor: pointer;
+}
