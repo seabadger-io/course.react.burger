@@ -8,7 +8,7 @@ const networkErrorHandler = (WrappedComponent, axios) => {
       error: null
     };
 
-    componentDidMount() {
+    componentWillMount() {
       axios.interceptors.response.use(response => response, (error) => {
         this.setState({ error: error });
       });

@@ -29,7 +29,24 @@ class BurgerBuilder extends Component {
     totalPrice: 4,
     purchasable: false,
     purchasing: false,
-    loading: false
+    loading: false,
+    error: false
+  }
+
+  componentDidMount = () => {
+    this.setState({ loading: true });
+    axios.get('/ingredients.json').then((response) => {
+      if (response.status >= 200 && response.status < 400) {
+        this.setState({ ingredients: response.data });
+      } else {
+        this.setState({ error: true });
+      }
+    }).catch(() => {
+      this.setState({ error: true });
+    })
+    .finally(() => {
+      this.setState({ loading: false });
+    });
   }
 
   updatePurchaseState = (ingredients) => {
@@ -119,14 +136,12 @@ class BurgerBuilder extends Component {
     oncancel={this.purchaseCancelHandler}
     oncontinue={this.purchaseContinueHandler}
     />;
-    if (this.state.loading) {
+    let content = <Spinner />;
+    if (this.state.loading && this.state.purchasing) {
       orderSummary = <Spinner />;
     }
-    return (
-      <Aux>
-        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-          {orderSummary}
-        </Modal>
+    if (!this.state.loading && !this.state.error) {
+      content = (<Aux>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           ingredientAdded={this.addIngredientHandler}
@@ -136,6 +151,16 @@ class BurgerBuilder extends Component {
           purchaseEnabled={this.state.purchasable}
           order={this.purchaseHandler}
         />
+      </Aux>);
+    } else if (this.state.error) {
+      content = <div>The application has failed to load</div>;
+    }
+    return (
+      <Aux>
+        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+          {orderSummary}
+        </Modal>
+        {content}
       </Aux>
     );
   }
