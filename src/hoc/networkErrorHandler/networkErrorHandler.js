@@ -9,13 +9,20 @@ const networkErrorHandler = (WrappedComponent, axios) => {
     };
 
     componentWillMount() {
-      axios.interceptors.response.use(response => response, (error) => {
+      this.responseInterceptor =  axios.interceptors.response.use(
+      response => response,
+      (error) => {
         this.setState({ error: error });
       });
-      axios.interceptors.request.use((request) => {
+      this.requestInterceptor = axios.interceptors.request.use((request) => {
         this.setState({ error: null });
         return request;
       });
+    }
+
+    componentWillUnmount() {
+      axios.interceptors.request.eject(this.requestInterceptor);
+      axios.interceptors.response.eject(this.responseInterceptor);
     }
 
     closeErrorMessage = () => {
