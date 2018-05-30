@@ -38,6 +38,7 @@ class BurgerBuilder extends Component {
     axios.get('/ingredients.json').then((response) => {
       if (response.status >= 200 && response.status < 400) {
         this.setState({ ingredients: response.data });
+        this.updatePurchaseState(this.state.ingredients);
       } else {
         this.setState({ error: true });
       }
@@ -99,27 +100,28 @@ class BurgerBuilder extends Component {
 
   purchaseContinueHandler = () => {
     // alert('Ok. Yet to implement this functionality');
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Dummy Joe',
-        address: {
-          street: 'DM Str 1',
-          zipCode: '1234',
-          country: 'Switzerland'
-        },
-        email: 'dummy@gmail-test.com'
-      },
-      deliveryMethod: 'fastest'
-    };
-    this.setState({ loading: true });
-    axios.post('/orders.json', order)
-      .then(response => console.log)
-      .catch(error => console.log)
-      .finally(() => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: 'Dummy Joe',
+    //     address: {
+    //       street: 'DM Str 1',
+    //       zipCode: '1234',
+    //       country: 'Switzerland'
+    //     },
+    //     email: 'dummy@gmail-test.com'
+    //   },
+    //   deliveryMethod: 'fastest'
+    // };
+    // this.setState({ loading: true });
+    // axios.post('/orders.json', order)
+    //   .then(response => console.log)
+    //   .catch(error => console.log)
+    //   .finally(() => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   });
+    this.props.history.push('/checkout');
   };
 
   render() {
