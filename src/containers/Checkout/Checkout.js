@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
+import ContactData from './ContactData/ContactData';
 
 export default class Checkout extends Component {
   state = {
@@ -42,6 +44,7 @@ export default class Checkout extends Component {
           onCancel={this.cancelHandler}
           onSubmit={this.submitHandler}
         />
+        <Route path={this.props.match.path + '/order-data'} component={ContactData} />;
       </div>
     )
   }
