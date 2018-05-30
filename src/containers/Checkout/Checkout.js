@@ -7,7 +7,8 @@ import ContactData from './ContactData/ContactData';
 
 export default class Checkout extends Component {
   state = {
-    ingredients: null
+    ingredients: null,
+    totalPrice: null
   }
 
   componentWillMount = () => {
@@ -22,7 +23,7 @@ export default class Checkout extends Component {
     for (const i of ingredientsParams.entries()) {
       ingredients[i[0]] = +i[1];
     }
-    this.setState({ ingredients: ingredients });
+    this.setState({ ingredients: ingredients, totalPrice: params.get('price') });
   }
 
   cancelHandler = () => {
@@ -44,7 +45,16 @@ export default class Checkout extends Component {
           onCancel={this.cancelHandler}
           onSubmit={this.submitHandler}
         />
-        <Route path={this.props.match.path + '/order-data'} component={ContactData} />;
+        <Route
+          path={this.props.match.path + '/order-data'}
+          render={() => {
+            return (<ContactData
+              ingredients={this.state.ingredients}
+              totalPrice={this.state.totalPrice}
+              history={this.props.history}
+            />);
+          }}
+        />;
       </div>
     )
   }
