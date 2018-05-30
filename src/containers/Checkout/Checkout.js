@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 
 export default class Checkout extends Component {
   state = {
-    ingredients: {
-      salad: 1,
-      meat: 0,
-      cheese: 2,
-      bacon: 0
+    ingredients: null
+  }
+
+  componentWillMount = () => {
+    const params = new URLSearchParams(this.props.location.search);
+    const ingredientsStr = params.get('ingredients');
+    if (!ingredientsStr) {
+      this.props.history.replace('/');
+      return;
     }
+    const ingredientsParams = new URLSearchParams(decodeURIComponent(ingredientsStr));
+    const ingredients = {};
+    for (const i of ingredientsParams.entries()) {
+      ingredients[i[0]] = +i[1];
+    }
+    this.setState({ ingredients: ingredients });
   }
 
   cancelHandler = () => {
@@ -21,6 +32,9 @@ export default class Checkout extends Component {
   }
 
   render() {
+    if (this.state.ingredients === null) {
+      return <Spinner />;
+    }
     return (
       <div>
         <CheckoutSummary
