@@ -13,10 +13,10 @@ export default (props) => {
       </div>
       <Button
         btnType="Danger"
-        clicked>CANCEL</Button>
+        clicked={props.onCancel}>Cancel</Button>
       <Button
         btnType="Success"
-        clicked>CONTINUE</Button>
+        clicked={props.onSubmit}>Continue</Button>
     </div>
   )
 };

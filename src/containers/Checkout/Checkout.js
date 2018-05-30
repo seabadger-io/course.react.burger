@@ -12,10 +12,22 @@ export default class Checkout extends Component {
     }
   }
 
+  cancelHandler = () => {
+    this.props.history.goBack();
+  }
+
+  submitHandler = () => {
+    this.props.history.push('/checkout/order-data')
+  }
+
   render() {
     return (
       <div>
-        <CheckoutSummary ingredients={this.state.ingredients} />
+        <CheckoutSummary
+          ingredients={this.state.ingredients}
+          onCancel={this.cancelHandler}
+          onSubmit={this.submitHandler}
+        />
       </div>
     )
   }
