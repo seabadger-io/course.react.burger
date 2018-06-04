@@ -24,7 +24,12 @@ export default class ContactData extends Component {
         type: 'text',
         placeholder: 'Your name',
       },
-      value: ''
+      value: '',
+      valid: false,
+      validations: {
+        required: true
+      },
+      touched: false
     },
     email: {
       inputType: 'input',
@@ -35,7 +40,12 @@ export default class ContactData extends Component {
         type: 'email',
         placeholder: 'Your email',
       },
-      value: ''
+      value: '',
+      valid: false,
+      validations: {
+        required: true
+      },
+      touched: false
     },
     street: {
       inputType: 'input',
@@ -46,7 +56,12 @@ export default class ContactData extends Component {
         type: 'text',
         placeholder: 'Street',
       },
-      value: ''
+      value: '',
+      valid: false,
+      validations: {
+        required: true
+      },
+      touched: false
     },
     postalCode: {
       inputType: 'input',
@@ -57,7 +72,14 @@ export default class ContactData extends Component {
         type: 'text',
         placeholder: 'Postal code',
       },
-      value: ''
+      value: '',
+      valid: false,
+      validations: {
+        required: true,
+        minLength: 3,
+        maxLength: 6
+      },
+      touched: false
     },
     country: {
       inputType: 'input',
@@ -68,7 +90,12 @@ export default class ContactData extends Component {
         type: 'text',
         placeholder: 'Your country',
       },
-      value: ''
+      value: '',
+      valid: false,
+      validations: {
+        required: true
+      },
+      touched: false
     },
     deliveryMethod: {
       inputType: 'select',
@@ -81,7 +108,9 @@ export default class ContactData extends Component {
       options: [
         ['fastest', 'Fastest'],
         ['cheapest', 'Cheapest']
-      ]
+      ],
+      valid: true,
+      touched: false
     }
   }
 
@@ -110,9 +139,28 @@ export default class ContactData extends Component {
       });
   }
 
+  validateInput = (inputKey, value) => {
+    const validations = this.formDefinition[inputKey].validations;
+    if (typeof validations !== 'object' || validations === null) return true;
+    for (const validation in validations) {
+      if (validation === 'required' && validations[validation]) {
+        if (value.trim() === '') return false;
+      }
+      if (validation === 'minLength') {
+        if (value.length < validations[validation]) return false;
+      }
+      if (validation === 'maxLength') {
+        if (value.length > validations[validation]) return false;
+      }
+    }
+    return true;
+  }
+
   inputChangeHandler = (inputKey, event) => {
     const contactData = this.state.contactData;
     contactData[inputKey] = event.target.value;
+    this.formDefinition[inputKey].touched = true;
+    this.formDefinition[inputKey].valid = this.validateInput(inputKey, event.target.value);
     this.setState({ contactData: contactData });
   }
 
