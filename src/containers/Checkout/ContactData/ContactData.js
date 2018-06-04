@@ -97,7 +97,7 @@ export default class ContactData extends Component {
       ingredients: this.state.ingredients,
       price: this.state.totalPrice,
       contactData: {
-        ...this.state.formInput
+        ...this.state.contactData
       }
     };
     this.setState({ loading: true });
@@ -123,13 +123,13 @@ export default class ContactData extends Component {
       return (
         <div className={classes.ContactData}>
           <h4>Enter your contact information</h4>
-          <form>
+          <form onSubmit={this.orderHandler}>
             {
               Object.keys(this.formDefinition).map((key) => {
                 return <Input {...this.formDefinition[key]} key={key} onChange={(event) => { this.inputChangeHandler(key, event) }} value={this.state.contactData[key]} />;
               })
             }
-            <Button btnType="Success" clicked={this.orderHandler}>Order</Button>
+            <Button btnType="Success">Order</Button>
           </form>
         </div>
       );
