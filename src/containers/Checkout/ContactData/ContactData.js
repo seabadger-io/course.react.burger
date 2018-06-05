@@ -11,7 +11,8 @@ export default class ContactData extends Component {
     ingredients: [],
     totalPrice: '',
     contactData: {},
-    loading: false
+    loading: false,
+    formIsValid: false
   }
 
   formDefinition = {
@@ -156,11 +157,21 @@ export default class ContactData extends Component {
     return true;
   }
 
+  validateForm = () => {
+    for (const key in this.formDefinition) {
+      if (! this.formDefinition[key].valid) {
+        return this.setState({ formIsValid: false });
+      }
+    }
+    this.setState({ formIsValid: true });
+  }
+
   inputChangeHandler = (inputKey, event) => {
     const contactData = this.state.contactData;
     contactData[inputKey] = event.target.value;
     this.formDefinition[inputKey].touched = true;
     this.formDefinition[inputKey].valid = this.validateInput(inputKey, event.target.value);
+    this.validateForm();
     this.setState({ contactData: contactData });
   }
 
@@ -171,13 +182,13 @@ export default class ContactData extends Component {
       return (
         <div className={classes.ContactData}>
           <h4>Enter your contact information</h4>
-          <form onSubmit={this.orderHandler}>
+          <form onSubmit={this.orderHandler} valid={this.state.formIsValid}>
             {
               Object.keys(this.formDefinition).map((key) => {
                 return <Input {...this.formDefinition[key]} key={key} onChange={(event) => { this.inputChangeHandler(key, event) }} value={this.state.contactData[key]} />;
               })
             }
-            <Button btnType="Success">Order</Button>
+            <Button btnType="Success" disabled={!this.state.formIsValid}>Order</Button>
           </form>
         </div>
       );

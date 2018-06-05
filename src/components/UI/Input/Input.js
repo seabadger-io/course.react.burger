@@ -17,11 +17,11 @@ const Input = (props) => {
       inputElement = <textarea {...attributes} className={elementClasses.join(' ')} onChange={props.onChange} />;
       break;
     case ('select'):
-    inputElement = <select {...attributes} className={elementClasses.join(' ')} onChange={props.onChange}>
-      { props.options.map((option) => {
-        return <option key={option[0]} value={option[0]}>{option[1]}</option>;
-      })}
-    </select>;
+      inputElement = <select {...attributes} className={elementClasses.join(' ')} onChange={props.onChange}>
+        { props.options.map((option) => {
+          return <option key={option[0]} value={option[0]}>{option[1]}</option>;
+        })}
+      </select>;
       break;
     default:
       inputElement = <input {...attributes} className={elementClasses.join(' ')} onChange={props.onChange} />;
