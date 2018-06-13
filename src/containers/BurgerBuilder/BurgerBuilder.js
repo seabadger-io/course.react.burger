@@ -54,14 +54,8 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = () => {
-    // alert('Ok. Yet to implement this functionality');
-    const ingredients = Object.keys(this.state.ingredients)
-    .map(k => k + '=' + this.state.ingredients[k])
-    .join('&');
-    const price = 'price=' + this.props.totalPrice;
     this.props.history.push({
-      pathname: '/checkout',
-      search: '?ingredients=' + encodeURIComponent(ingredients) + '&' + price
+      pathname: '/checkout'
     });
   };
 
