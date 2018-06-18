@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Spinner from '../../components/UI/Spinner/Spinner';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 
@@ -17,8 +16,9 @@ class Checkout extends Component {
   }
 
   render() {
-    if (this.props.ingredients === null) {
-      return <Spinner />;
+    if (this.props.ingredients === null ||
+        this.props.purchased) {
+      return <Redirect to="/" />;
     }
     return (
       <div>
@@ -38,7 +38,8 @@ class Checkout extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ingredients: state.ingredients
+    ingredients: state.burgerBuilder.ingredients,
+    purchased: state.order.purchased
   };
 };
 
