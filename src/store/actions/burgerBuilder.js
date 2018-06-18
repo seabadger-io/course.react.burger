@@ -16,9 +16,16 @@ export const removeIngredient = (name) => {
 };
 
 export const setIngredients = (ingredients) => {
+  const orderedIngredients = {
+    salad: 0,
+    bacon: 0,
+    cheese: 0,
+    meat: 0,
+    ...ingredients
+  };
   return {
     type: actionTypes.SET_INGREDIENTS,
-    ingredients: ingredients
+    ingredients: orderedIngredients
   };
 };
 
