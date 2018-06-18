@@ -7,32 +7,17 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import axios from '../../axios-orders';
 import networkErrorHandler from '../../hoc/networkErrorHandler/networkErrorHandler';
-import * as actionTypes from '../../store/actions';
+import * as actions from '../../store/actions/index';
+import axios from '../../axios-orders';
 
 class BurgerBuilder extends Component {
   state = {
-    purchasing: false,
-    loading: false,
-    error: false
+    purchasing: false
   }
 
   componentDidMount = () => {
-    // this.setState({ loading: true });
-    // axios.get('/ingredients.json').then((response) => {
-    //   if (response.status >= 200 && response.status < 400) {
-    //     this.setState({ ingredients: response.data });
-    //     this.updatePurchaseState(this.state.ingredients);
-    //   } else {
-    //     this.setState({ error: true });
-    //   }
-    // }).catch(() => {
-    //   this.setState({ error: true });
-    // })
-    // .finally(() => {
-    //   this.setState({ loading: false });
-    // });
+    this.props.initIngredients();
   }
 
   isPurchasable = () => {
@@ -60,24 +45,25 @@ class BurgerBuilder extends Component {
   };
 
   render() {
-    const disabledControls = {};
-    Object.keys(this.props.ingredients).forEach((key) => {
-      disabledControls[key] = {
-        more: this.props.ingredients[key] >= this.props.MAX_PER_INGREDIENT,
-        less: this.props.ingredients[key] <= 0
-      };
-    });
-    let orderSummary = <OrderSummary
-    ingredients={this.props.ingredients}
-    price={this.props.totalPrice}
-    oncancel={this.purchaseCancelHandler}
-    oncontinue={this.purchaseContinueHandler}
-    />;
+
+    let orderSummary = <Spinner/>;
     let content = <Spinner />;
-    if (this.state.loading && this.state.purchasing) {
-      orderSummary = <Spinner />;
+    if (null !== this.props.ingredients && this.state.purchasing) {
+      orderSummary = <OrderSummary
+      ingredients={this.props.ingredients}
+      price={this.props.totalPrice}
+      oncancel={this.purchaseCancelHandler}
+      oncontinue={this.purchaseContinueHandler}
+      />;
     }
-    if (!this.state.loading && !this.state.error) {
+    if (null !== this.props.ingredients && !this.props.error) {
+      const disabledControls = {};
+      Object.keys(this.props.ingredients).forEach((key) => {
+        disabledControls[key] = {
+          more: this.props.ingredients[key] >= this.props.MAX_PER_INGREDIENT,
+          less: this.props.ingredients[key] <= 0
+        };
+      });
       content = (<Aux>
         <Burger ingredients={this.props.ingredients} />
         <BuildControls
@@ -89,7 +75,7 @@ class BurgerBuilder extends Component {
           order={this.purchaseHandler}
         />
       </Aux>);
-    } else if (this.state.error) {
+    } else if (this.props.error) {
       content = <div>The application has failed to load</div>;
     }
     return (
@@ -107,14 +93,16 @@ const mapStateToProps = (state) => {
   return {
     ingredients: state.ingredients,
     totalPrice: state.totalPrice,
+    error: state.error,
     MAX_PER_INGREDIENT: state.MAX_PER_INGREDIENT
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onIngredientAdded: (ingredientName) => dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingredientName }),
-    onIngredientRemoved: (ingredientName) => dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingredientName })
+    onIngredientAdded: (ingredientName) => dispatch(actions.addIngredient(ingredientName)),
+    onIngredientRemoved: (ingredientName) => dispatch(actions.removeIngredient(ingredientName)),
+    initIngredients: () => dispatch(actions.asyncInitIngredients())
   }
 };
 
