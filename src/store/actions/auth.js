@@ -7,10 +7,12 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (authData) => {
+export const authSuccess = (idToken, userId, email) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    authData: authData
+    idToken: idToken,
+    userId: userId,
+    email: email
   };
 };
 
@@ -33,7 +35,11 @@ export const auth = (email, password, isSignup = false) => {
     })
     .then(response => {
       console.log(response);
-      dispatch(authSuccess(response.data));
+      dispatch(authSuccess(
+        response.data.idToken,
+        response.data.localId,
+        response.data.email
+      ));
     })
     .catch(error => {
       console.log(error);
