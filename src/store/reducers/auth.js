@@ -30,6 +30,13 @@ export default (state = initialState, action) => {
         loading: false,
         error: action.error
       };
+    case actionTypes.AUTH_LOGOUT:
+      return {
+        ...state,
+        idToken: null,
+        userId: null,
+        email: null
+      };
     default:
       return state;
   }
