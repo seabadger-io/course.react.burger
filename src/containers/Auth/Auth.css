@@ -12,6 +12,11 @@
   display: block;
 }
 
+.Error {
+  font-weight: bold;
+  color: #a10000;
+}
+
 @media (min-width: 600px) {
   .Auth {
     max-width: 500px;
