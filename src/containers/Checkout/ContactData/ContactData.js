@@ -124,6 +124,7 @@ class ContactData extends Component {
   orderHandler = (e) => {
     e.preventDefault();
     const order = {
+      userId: this.props.userId,
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
       contactData: {
@@ -194,7 +195,8 @@ const mapStateToProps = (state) => {
     ingredients: state.burgerBuilder.ingredients,
     totalPrice: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
-    idToken: state.auth.idToken
+    idToken: state.auth.idToken,
+    userId: state.auth.userId
   };
 };
 
