@@ -4,7 +4,8 @@ const initialState = {
   idToken: null,
   userId: null,
   email: null,
-  error: null
+  error: null,
+  continueUrl: '/'
 };
 
 export default (state = initialState, action) => {
@@ -36,6 +37,11 @@ export default (state = initialState, action) => {
         idToken: null,
         userId: null,
         email: null
+      };
+    case actionTypes.AUTH_SET_CONTINUE_URL:
+      return {
+        ...state,
+        continueUrl: action.url
       };
     default:
       return state;

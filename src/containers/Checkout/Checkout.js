@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
+import * as actions from '../../store/actions';
 
 class Checkout extends Component {
 
@@ -19,6 +20,10 @@ class Checkout extends Component {
     if (this.props.ingredients === null ||
         this.props.purchased) {
       return <Redirect to="/" />;
+    }
+    if (! this.props.isAuthenticated) {
+      this.props.setAuthContinueUrl('/checkout');
+      return <Redirect to="/auth" />;
     }
     return (
       <div>
@@ -39,8 +44,15 @@ class Checkout extends Component {
 const mapStateToProps = (state) => {
   return {
     ingredients: state.burgerBuilder.ingredients,
-    purchased: state.order.purchased
+    purchased: state.order.purchased,
+    isAuthenticated: state.auth.idToken !== null
   };
 };
 
-export default connect(mapStateToProps)(Checkout);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAuthContinueUrl: (url) => { dispatch(actions.setAuthContinueUrl(url)) }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);

@@ -9,6 +9,9 @@ const Input = (props) => {
   if (props.touched && !props.valid) {
     elementClasses.push(classes.Invalid);
   }
+  if (props.value) {
+    attributes.value = props.value;
+  }
   switch (props.inputType) {
     case ('input'):
       inputElement = <input {...attributes} className={elementClasses.join(' ')} onChange={props.onChange} />;
@@ -31,6 +34,7 @@ const Input = (props) => {
   if (attributes.id) {
     forElement = { htmlFor: attributes.id };
   }
+
   return (
     <div className={classes.Input}>
       <label className={classes.Label} {...forElement}>{props.label}</label>

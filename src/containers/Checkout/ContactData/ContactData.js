@@ -40,9 +40,10 @@ class ContactData extends Component {
         name: 'email',
         type: 'email',
         placeholder: 'Your email',
+        readonly: "true"
       },
-      value: '',
-      valid: false,
+      value: this.props.email,
+      valid: true,
       validations: {
         required: true
       },
@@ -115,7 +116,7 @@ class ContactData extends Component {
     }
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     const contactData = {};
     Object.keys(this.formDefinition).forEach(key => contactData[key] = this.formDefinition[key].value);
     this.setState( { contactData: contactData });
@@ -196,7 +197,8 @@ const mapStateToProps = (state) => {
     totalPrice: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
     idToken: state.auth.idToken,
-    userId: state.auth.userId
+    userId: state.auth.userId,
+    email: state.auth.email
   };
 };
 

@@ -29,6 +29,13 @@ export const logout = () => {
   };
 };
 
+export const setAuthContinueUrl = (url) => {
+  return {
+    type: actionTypes.AUTH_SET_CONTINUE_URL,
+    url: url
+  };
+};
+
 const checkAuthTimeout = (expirationTime) => {
   return (dispatch) => {
     setTimeout(() => {
