@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, withRouter,  Redirect } from 'react-router-dom';
+import { Route, withRouter,  Redirect, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Layout from './components/Layout/Layout';
@@ -27,15 +27,17 @@ class App extends Component {
     return (
       <div>
         <Layout>
-          <Route path="/" exact component={BurgerBuilder} />
-          <Route path="/auth" component={Auth} />
-          <Route path="/logout" component={Logout} />
-          {
-            authenticatedRoutes.map(({path, component}) => {
-              return <Route key={path} path={path} component={component} />
-            })
-          }
-          <Redirect to="/" />
+          <Switch>
+            <Route path="/" exact component={BurgerBuilder} />
+            <Route path="/auth" component={Auth} />
+            <Route path="/logout" component={Logout} />
+            {
+              authenticatedRoutes.map(({path, component}) => {
+                return <Route key={path} path={path} component={component} />
+              })
+            }
+            <Redirect to="/" />
+          </Switch>
         </Layout>
       </div>
     );
