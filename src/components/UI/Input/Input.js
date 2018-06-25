@@ -10,7 +10,7 @@ const Input = (props) => {
     elementClasses.push(classes.Invalid);
   }
   if (props.value) {
-    attributes.value = props.value;
+    attributes.value = props.value.toString();
   }
   switch (props.inputType) {
     case ('input'):
