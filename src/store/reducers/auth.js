@@ -1,11 +1,12 @@
 import * as actionTypes from '../actions/actionTypes';
 
-const initialState = {
+export const initialState = {
   idToken: null,
   userId: null,
   email: null,
   error: null,
-  continueUrl: '/'
+  continueUrl: '/',
+  loading: false
 };
 
 export default (state = initialState, action) => {
