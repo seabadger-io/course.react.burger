@@ -11,7 +11,7 @@ import networkErrorHandler from '../../hoc/networkErrorHandler/networkErrorHandl
 import * as actions from '../../store/actions/index';
 import axios from '../../axios-orders';
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   state = {
     purchasing: false
   }
@@ -57,6 +57,7 @@ class BurgerBuilder extends Component {
       oncontinue={this.purchaseContinueHandler}
       />;
     }
+    console.log('In class', this.props.ingredients);
     if (null !== this.props.ingredients && !this.props.error) {
       const disabledControls = {};
       Object.keys(this.props.ingredients).forEach((key) => {
